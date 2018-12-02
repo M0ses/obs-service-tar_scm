@@ -255,10 +255,21 @@ class Git(Scm):
         """Detect changes between GIT revisions."""
         last_rev = chgs['revision']
 
+        # Take only the last 10 commits if changesgenerate run
+        # the first time.
         if last_rev is None:
             last_rev = self._log_cmd(
                 ['-n1', '--pretty=format:%H', '--skip=10'], subdir)
             last_rev = last_rev
+
+        # ensure that initial commit is taken as last_rev if less than 10
+        # commits
+        if not last_rev:
+            cmd = self._get_scm_cmd() + ['rev-list', '--max-parents=0', 'HEAD']
+            if subdir:
+                cmd += ['--', subdir]
+            lrev = self.helpers.safe_run(cmd, cwd=self.clone_dir)[1]
+            last_rev = lrev.strip()
 
         current_rev = self._log_cmd(['-n1', '--pretty=format:%H'], subdir)
 
