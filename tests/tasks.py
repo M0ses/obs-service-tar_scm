@@ -93,6 +93,13 @@ class TasksTestCases(unittest.TestCase):
         tasks = TarSCM.Tasks(self.cli)
         tasks.generate_list()
 
+    def test_appimage_empty_build(self):
+        self.cli.snapcraft = False
+        self.cli.appimage = True
+        self._cd_fixtures_dir()
+        tasks = TarSCM.Tasks(self.cli)
+        tasks.generate_list()
+
     def test_generate_tl_multi_tasks(self):
         expected = {
             'libpipeline': {
