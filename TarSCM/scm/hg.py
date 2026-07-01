@@ -5,6 +5,7 @@ import tempfile
 import shutil
 import logging
 from TarSCM.scm.base import Scm
+from TarSCM.exceptions import OptionsError
 
 
 class Hg(Scm):
@@ -49,7 +50,8 @@ class Hg(Scm):
         if self.revision is None:
             self.revision = 'tip'
 
-        cmd = self._get_scm_cmd() + ['update', self.revision]
+        # prevent option injection by adding `--`
+        cmd = self._get_scm_cmd() + ['update', '--', self.revision]
         rcode, _ = self.helpers.run_cmd(cmd,
                                         cwd=self.clone_dir,
                                         interactive=sys.stdout.isatty())
@@ -143,5 +145,6 @@ class Hg(Scm):
     def check_url(self):
         """check if url is a remote url"""
         if not re.match("^https?://", self.url):
-            return False
-        return True
+            raise OptionsError(f"Invalid url scheme (try http/https): {self.url}")
+        if re.findall(r"\s", self.url):
+            raise OptionsError(f"Found space character in url: {self.url}")

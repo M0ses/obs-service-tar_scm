@@ -90,7 +90,7 @@ class GitSvnTests(CommonTests):
         self._check_servicedata(revision=3)
 
     def _new_change_entry_regexp(self, author, changes):
-        return textwrap.dedent("""\
+        return textwrap.dedent(r"""\
           ^-------------------------------------------------------------------
           \w{3} \w{3} [ \d]\d \d\d:\d\d:\d\d [A-Z]{3} 20\d\d - %s
 
@@ -151,7 +151,7 @@ class GitSvnTests(CommonTests):
         expected_author = author or 'obs-service-tar-scm@invalid'
         expected_changes_regexp = self._new_change_entry_regexp(
             expected_author,
-            textwrap.dedent("""\
+            textwrap.dedent(r"""\
               - Update to version 0.6.%s:
                 \* 5
                 \* 4
@@ -181,7 +181,7 @@ class GitSvnTests(CommonTests):
         expected_author = self.fixtures.user_email
         expected_changes_regexp = self._new_change_entry_regexp(
             expected_author,
-            textwrap.dedent("""\
+            textwrap.dedent(r"""\
               - Update to version %s:
                 \* 5
                 \* 4
@@ -211,7 +211,7 @@ class GitSvnTests(CommonTests):
         expected_author = self.fixtures.user_email
         expected_changes_regexp = self._new_change_entry_regexp(
             expected_author,
-            textwrap.dedent("""\
+            textwrap.dedent(r"""\
               - Update to version 0.6.%s:
                 \* 8
                 \* 7
@@ -245,7 +245,7 @@ class GitSvnTests(CommonTests):
         expected_author = self.fixtures.user_email
         expected_changes_regexp = self._new_change_entry_regexp(
             expected_author,
-            textwrap.dedent("""\
+            textwrap.dedent(r"""\
               - Update to version 0.6.%s:
                 \* 5
                 \* 4

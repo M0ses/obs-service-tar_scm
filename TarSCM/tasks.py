@@ -174,8 +174,8 @@ class Tasks():
         self.scm_object = scm_object   = scm_class(args, self)
 
         tmode = bool(os.getenv('TAR_SCM_TESTMODE'))
-        if not tmode and not scm_object.check_url():
-            sys.exit("--url does not match remote repository")
+        if not tmode:
+            scm_object.check_url()
 
         try:
             scm_object.check_scm()

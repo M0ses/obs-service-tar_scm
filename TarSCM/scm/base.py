@@ -11,6 +11,8 @@ import subprocess
 import glob
 import locale
 
+from pathlib import Path
+
 from TarSCM.helpers import Helpers
 from TarSCM.changes import Changes
 from TarSCM.config import Config
@@ -303,4 +305,5 @@ class Scm():
         self.cleanup()
 
     def check_url(self):
-        return True
+        pass
+

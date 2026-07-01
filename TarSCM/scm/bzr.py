@@ -3,6 +3,7 @@ import re
 import os
 import dateutil.parser
 from TarSCM.scm.base import Scm
+from TarSCM.exceptions import OptionsError
 
 
 class Bzr(Scm):
@@ -67,5 +68,4 @@ class Bzr(Scm):
     def check_url(self):
         """check if url is a remote url"""
         if not re.match("^((a?ftp|bzr|https?)://|lp:)", self.url):
-            return False
-        return True
+            raise OptionsError(f"URL does not match allowed scheme: {self.url}")

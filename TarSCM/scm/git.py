@@ -5,6 +5,7 @@ import sys
 import shutil
 
 from TarSCM.scm.base import Scm
+from TarSCM.exceptions import OptionsError
 
 
 class Git(Scm):
@@ -315,16 +316,9 @@ class Git(Scm):
     def check_url(self):
         """check if url is a remote url"""
 
-        # no local path allowed
-        if re.match('^file:', self.url):
-            return False
+        if re.findall(r"\s", self.url):
+            raise OptionsError(f"URL contains space characters: {self.url}")
 
-        if '://' in self.url:
-            return bool(re.match("^(https?|ftps?|git|ssh)://", self.url))
-
-        # e.g. user@host.xy:path/to/repo
-        if re.match('^[^/]+:', self.url):
-            return True
-
-        # Deny by default, might be local path
-        return False
+        pat = r"^(https?|ftps?|git|ssh)://"
+        if not re.match(pat, self.url):
+            raise OptionsError(f"Invalid url scheme ({pat}): {self.url}")

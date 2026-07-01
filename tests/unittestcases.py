@@ -18,6 +18,7 @@ from TarSCM.scm.git import Git
 from TarSCM.scm.svn import Svn
 from TarSCM.scm.hg  import Hg
 from TarSCM.scm.bzr import Bzr
+from TarSCM.exceptions import OptionsError
 
 
 # pylint: disable=duplicate-code
@@ -298,7 +299,7 @@ class UnitTestCases(unittest.TestCase):
         for tca in tc_arr:
             for url in tca['urls']:
                 tca['obj'].url = url
-                self.assertTrue(tca['obj'].check_url())
+                tca['obj'].check_url()
 
     def test_check_url_invalid(self):
         invalid = [
@@ -315,6 +316,7 @@ class UnitTestCases(unittest.TestCase):
             '/lala/nana',
             '/tmp/user@example.com:my/local/path'
             '/tmp/example.com:my/local/path'
+            'local/relative/path'
         ]
 
         scms = [
@@ -328,7 +330,11 @@ class UnitTestCases(unittest.TestCase):
             for url in invalid:
                 print("%r %s" % (scm, url))
                 scm.url = url
-                self.assertFalse(scm.check_url())
+                self.assertRaisesRegex(
+                    OptionsError,
+                    re.compile(r"Invalid url scheme .*"),
+                    scm.check_url()
+                )
 
     def test_scm_tar_invalid_params(self):
         tc_name    = inspect.stack()[0][3]

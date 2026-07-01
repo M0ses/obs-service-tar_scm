@@ -21,6 +21,7 @@ from tests.unittestcases import UnitTestCases
 from tests.tasks import TasksTestCases
 from tests.scm import SCMBaseTestCases
 from tests.tartests import TarTestCases
+from tests.cli import CliTestCases
 from tests.archiveobscpiotestcases import ArchiveOBSCpioTestCases
 
 
@@ -44,7 +45,9 @@ def prepare_testclasses():
         SvnTests,
         HgTests,
         TarTestCases,
-        BzrTests
+        BzrTests,
+        TarTestCases,
+        CliTestCases
     ]
 
     if os.getenv('TAR_SCM_TC'):

@@ -9,6 +9,7 @@ import shutil
 import dateutil.parser
 
 from TarSCM.scm.base import Scm
+from TarSCM.exceptions import OptionsError
 
 ENCODING_RE = re.compile(r".*("
                          "Can't convert string from '.*' to native encoding:"
@@ -235,5 +236,4 @@ class Svn(Scm):
     def check_url(self):
         """check if url is a remote url"""
         if not re.match("^(https?|svn)://", self.url):
-            return False
-        return True
+            raise OptionsError(f"Invalid url scheme (valid http/https/svn): {self.url}")
